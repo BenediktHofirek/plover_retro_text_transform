@@ -72,6 +72,36 @@ def retro_screaming(ctx, cmdline):
     action.prev_attach = True
     return action
 
+def retro_dot(ctx, cmdline):
+    """'hello world' -> 'hello.world'"""
+    action = ctx.copy_last_action()
+    num_words = int(cmdline)
+    
+    last_words = "".join(ctx.last_words(count=num_words))
+    action.prev_replace = last_words
+
+    transformed = re.sub(r'\s+', '.', last_words)
+
+    action.text = transformed
+    action.word = transformed
+    action.prev_attach = True
+    return action
+
+def retro_doublecolon(ctx, cmdline):
+    """'hello world' -> 'hello::world'"""
+    action = ctx.copy_last_action()
+    num_words = int(cmdline)
+    
+    last_words = "".join(ctx.last_words(count=num_words))
+    action.prev_replace = last_words
+
+    transformed = re.sub(r'\s+', '::', last_words)
+
+    action.text = transformed
+    action.word = transformed
+    action.prev_attach = True
+    return action
+
 def retro_title(ctx, cmdline):
     action = ctx.copy_last_action()
     num_words = int(cmdline)
