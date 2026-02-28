@@ -80,7 +80,40 @@ def retro_dot(ctx, cmdline):
     last_words = "".join(ctx.last_words(count=num_words))
     action.prev_replace = last_words
 
-    transformed = re.sub(r'\s+', '.', last_words)
+    words = [w for w in re.split(r'[\s.]+', last_words) if w]
+    transformed = ".".join(words)
+
+    action.text = transformed
+    action.word = transformed
+    action.prev_attach = True
+    return action
+
+def retro_dot_pascal(ctx, cmdline):
+    """'hello world' -> 'Hello.World'"""
+    action = ctx.copy_last_action()
+    num_words = int(cmdline)
+    
+    last_words = "".join(ctx.last_words(count=num_words))
+    action.prev_replace = last_words
+
+    words = [w for w in re.split(r'[\s.]+', last_words) if w]
+    transformed = ".".join(w.capitalize() for w in words) if words else last_words
+
+    action.text = transformed
+    action.word = transformed
+    action.prev_attach = True
+    return action
+
+def retro_dot_camel(ctx, cmdline):
+    """'hello world' -> 'Hello.World'"""
+    action = ctx.copy_last_action()
+    num_words = int(cmdline)
+    
+    last_words = "".join(ctx.last_words(count=num_words))
+    action.prev_replace = last_words
+
+    words = [w for w in re.split(r'[\s.]+', last_words) if w]
+    transformed = ".".join(w.lower() if i == 0 else w.capitalize() for i, w in enumerate(words)) if words else last_words
 
     action.text = transformed
     action.word = transformed
@@ -95,7 +128,24 @@ def retro_doublecolon(ctx, cmdline):
     last_words = "".join(ctx.last_words(count=num_words))
     action.prev_replace = last_words
 
-    transformed = re.sub(r'\s+', '::', last_words)
+    words = [w for w in re.split(r'[\s:]+', last_words) if w]
+    transformed = "::".join(words)
+
+    action.text = transformed
+    action.word = transformed
+    action.prev_attach = True
+    return action
+
+def retro_doublecolon_pascal(ctx, cmdline):
+    """'hello world' -> 'hello::world'"""
+    action = ctx.copy_last_action()
+    num_words = int(cmdline)
+    
+    last_words = "".join(ctx.last_words(count=num_words))
+    action.prev_replace = last_words
+
+    words = [w for w in re.split(r'[\s:]+', last_words) if w]
+    transformed = "::".join(w.capitalize() for w in words) if words else last_words
 
     action.text = transformed
     action.word = transformed
